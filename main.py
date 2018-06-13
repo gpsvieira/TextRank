@@ -11,7 +11,8 @@ with open("hp.txt") as fp:
     sentences = sent_tokenize(text)
     sentences = [re.sub('"', '', line) for line in sentences]
 
-sim = editdistance.eval
+def sim(a, b):
+    return 1/(editdistance.eval(a,b) + 0.000000000001)
 
 def create_graph(sentences):
     G=nx.Graph()
@@ -23,16 +24,16 @@ def create_graph(sentences):
             pass
     return G
 
-
-import matplotlib.pyplot as plt
 G = create_graph(sentences=sentences)
-pos=nx.spring_layout(G)
-nx.draw_networkx_nodes(G, pos, node_size=700)
-nx.draw_networkx_edges(G, pos)
-plt.axis('off')
-plt.savefig("weighted_graph.png") # save as png
-plt.show()
+
+# import matplotlib.pyplot as plt
+# pos=nx.spring_layout(G)
+# nx.draw_networkx_nodes(G, pos, node_size=700)
+# nx.draw_networkx_edges(G, pos)
+# plt.axis('off')
+# plt.savefig("weighted_graph.png") # save as png
+# plt.show()
 
 
 pr = nx.pagerank(G)
-sorted(pr[0])
+print(sorted(pr))
