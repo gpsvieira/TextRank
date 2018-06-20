@@ -4,7 +4,7 @@ import operator
 #from template import textRank
 from slidingWindow import textRank
 
-G, pr = textRank(file="hp.txt")
+G, pr = textRank(file="corpora/hp.txt")
 
 sorted_pr = sorted(pr.items(), key=operator.itemgetter(1))
 sorted_pr = sorted_pr[::-1]
