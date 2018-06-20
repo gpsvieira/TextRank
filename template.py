@@ -1,7 +1,9 @@
 from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords
 import re
 import networkx as nx
 import editdistance
+import operator
 
 
 def textRank(file):
@@ -17,8 +19,10 @@ def textRank(file):
         """
         Clean your strings (words or sentences)
         """
-        clean_strings = [re.sub('"\n\!\'', '', line)
+        clean_strings = [re.sub('\"|\n|\!|,|-|[0-9]|“|\'', "", line)
                          for line in list_of_strings]
+        clean_strings = [word for word in clean_strings if word not in
+                         set(stopwords.words("english"))]
         return clean_strings
 
     sentences = preprocess(sentences)
@@ -43,8 +47,9 @@ def textRank(file):
                 pass
         return G
 
-    G = create_graph(words)
+    G = create_graph(sentences)
 
     pr = nx.pagerank(G)
-    return pr
+    sorted_pr = sorted(pr.items(), key=operator.itemgetter(1))
+    return sorted_pr[::-1]
     # print(sorted(pr))

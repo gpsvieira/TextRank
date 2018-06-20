@@ -1,3 +1,3 @@
 from template import textRank
 pr = textRank(file="hp.txt")
-print(sorted(pr))
+print(pr[0:10])
