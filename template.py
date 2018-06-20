@@ -19,13 +19,9 @@ def textRank(file):
         """
         Clean your strings (words or sentences)
         """
-        clean_strings = [re.sub('\"|\n|\!|,|-|[0-9]|“|\'', "", line)
-                         for line in list_of_strings]
-        clean_strings = [word for word in clean_strings if word not in
-                         set(stopwords.words("english"))]
+        clean_strings = [x for x in list_of_strings if x not in [',', ':', '.']]
+        clean_strings = [x for x in clean_strings if x not in stopwords.words("english")]
         return clean_strings
-
-    sentences = preprocess(sentences)
 
     def sim(a, b):
         """
@@ -47,9 +43,10 @@ def textRank(file):
                 pass
         return G
 
+
+    sentences = preprocess(sentences)
     G = create_graph(sentences)
 
     pr = nx.pagerank(G)
     sorted_pr = sorted(pr.items(), key=operator.itemgetter(1))
-    return sorted_pr[::-1]
-    # print(sorted(pr))
+    return G, sorted_pr[::-1]
