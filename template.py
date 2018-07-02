@@ -19,7 +19,7 @@ def textRank(file):
         """
         Clean your strings (words or sentences)
         """
-        clean_strings = [x for x in list_of_strings if x not in [',', ':', '.']]
+        clean_strings = [x for x in list_of_strings if x not in [',', ':', '.', '?']]
         clean_strings = [x for x in clean_strings if x not in stopwords.words("english")]
         return clean_strings
 

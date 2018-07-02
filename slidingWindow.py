@@ -22,8 +22,10 @@ def textRank(file):
 
     def preprocess(list_of_strings):
         #Clean strings from punctuation and stopwords
-        clean_strings = [x for x in list_of_strings if x not in [',',':','.']]
+        clean_strings = [x for x in list_of_strings if x not in [',',':','.','?']]
         clean_strings = [x for x in clean_strings if x not in stopwords.words("english")]
+        #remove additional words
+        clean_strings = [x for x in clean_strings if x not in ['mr.', 'mrs.']]
 
         #get the pos tags of the words
         posTags = utility.posTag(clean_strings)
@@ -58,7 +60,7 @@ def textRank(file):
             window = [x[0] for x in window if x[1] in ['NN', 'NNP', 'NNS', 'NNPS', 'JJ', 'JJR', 'JJS']]
 
             for word in window:
-                if word[0] not in similarities.keys():
+                if word not in similarities.keys():
                     similarities[word] = []
 
                 for otherWord in window:
@@ -83,8 +85,11 @@ def textRank(file):
                     pass
         return G
 
-    preprocessedText = preprocess(words[0:500])
+    print("prepocess...")
+    preprocessedText = preprocess(words)#[0:500])
+    print("find similarities...")
     similarities = sim(preprocessedText)
+    print("create graph...")
     G = create_graph(similarities)
 
     pr = nx.pagerank(G)
